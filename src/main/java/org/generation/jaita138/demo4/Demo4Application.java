@@ -2,6 +2,7 @@ package org.generation.jaita138.demo4;
 
 import java.util.List;
 
+import org.generation.jaita138.demo4.cli.CliManager;
 import org.generation.jaita138.demo4.db.entity.Utente;
 import org.generation.jaita138.demo4.db.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class Demo4Application implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		test();
+		//test();
+		new CliManager(utenteService);
 	}
 
 	public void test() {
@@ -32,11 +34,11 @@ public class Demo4Application implements CommandLineRunner{
 		u1.setUsername("mRossi");
 		u1.setPassword("123456");
 		u1.setCredito(1090);
-		System.out.println("--------------------------------");
 		utenteService.save(u1);
-		System.out.println("--------------------------------");
-		System.out.println(u1);
 		List<Utente> utenti = utenteService.findAll();
+		utenteService.findById(1L);
+		utenteService.delete(utenti.get(0));
+		System.out.println(u1);
 		System.out.println(utenti);
 		System.out.println("--------------------------------");
 		System.out.println("The end");

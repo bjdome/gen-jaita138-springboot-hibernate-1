@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class Utente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length=64)
     private String nome;
@@ -59,6 +59,7 @@ public class Utente {
         this.credito = credito;
     }
 
+    @Override
     public String toString(){
         return "Utente [\n"+
             "  id: "+id+",\n"+
@@ -69,6 +70,5 @@ public class Utente {
             "  credito: "+credito/100+","+credito%100+"\n"+
             "]";
     }
-
     
 }

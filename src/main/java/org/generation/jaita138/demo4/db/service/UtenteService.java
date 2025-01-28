@@ -17,8 +17,8 @@ public class UtenteService {
         utenteRepo.save(utente);
     }
 
-    public void delete(Long id) {
-        utenteRepo.deleteById(id);
+    public void delete(Utente utente) {
+        utenteRepo.delete(utente);
     }
 
     public List<Utente> findAll() {
