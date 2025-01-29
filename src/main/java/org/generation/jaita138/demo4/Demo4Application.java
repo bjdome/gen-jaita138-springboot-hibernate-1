@@ -2,8 +2,11 @@ package org.generation.jaita138.demo4;
 
 import java.util.List;
 
+import org.generation.jaita138.demo4.cli.CliManager;
+import org.generation.jaita138.demo4.db.entity.Role;
 import org.generation.jaita138.demo4.db.entity.Utente;
 import org.generation.jaita138.demo4.db.repository.UtenteRepo;
+import org.generation.jaita138.demo4.db.service.RoleService;
 import org.generation.jaita138.demo4.db.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +20,8 @@ public class Demo4Application implements CommandLineRunner {
     private UtenteService utenteService;
     @Autowired
     private UtenteRepo utenteRepo;
+    @Autowired
+    private RoleService roleService;
 
     public static void main(String[] args) {
         SpringApplication.run(Demo4Application.class, args);
@@ -26,7 +31,9 @@ public class Demo4Application implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //test();
         //new CliManager(utenteService);
-        testQuery();
+        //testQuery();
+        //testRole();
+        new CliManager(utenteService, roleService);
     }
 
     public void test() {
@@ -71,5 +78,12 @@ public class Demo4Application implements CommandLineRunner {
         System.out.println("--------------------------------");
         System.out.println("The end");
 
+    }
+
+    public void testRole(){
+        Role r1 = new Role();
+        r1.setNome("Admin");
+        r1.setDescrizione("Amministratore");
+        roleService.save(r1);
     }
 }

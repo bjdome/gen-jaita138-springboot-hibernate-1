@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Utente {
@@ -21,6 +22,17 @@ public class Utente {
     @Column(length=64)
     private String password;
     private int credito;
+
+    @ManyToOne
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
@@ -67,7 +79,8 @@ public class Utente {
             "  cognome: "+cognome+",\n"+
             "  username: "+username+",\n"+
             "  password: "+password+",\n"+
-            "  credito: "+credito/100+","+credito%100+"\n"+
+            "  credito: "+credito/100+","+credito%100+",\n"+
+            "  role: "+role+"\n"+
             "]";
     }
     
