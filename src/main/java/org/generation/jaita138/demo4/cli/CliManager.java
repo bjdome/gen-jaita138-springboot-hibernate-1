@@ -126,7 +126,15 @@ public class CliManager {
 
         List<Utente> utenti = utenteService.findAll();
         System.out.println("Utenti:");
-        System.out.println(utenti);
+        utenti.stream()
+            .map(u -> u.getId() + " - " 
+            + u.getNome() + " - " 
+            + u.getCognome() + " - " 
+            + u.getUsername() + " - " 
+            + u.getPassword() + " - " 
+            + u.getCredito()/100+","+u.getCredito()%100 + " - " 
+            + u.getRole().getNome())
+            .forEach(System.out::println);
         System.out.println("-------------------------------------");
     }
 
@@ -134,7 +142,9 @@ public class CliManager {
 
         List<Role> ruoli = roleService.findAll();
         System.out.println("Ruoli:");
-        System.out.println(ruoli);
+        ruoli.stream()
+            .map(r -> r.getId() + " - " + r.getNome() + "\n" + r.getDescrizione())
+            .forEach(System.out::println);
         System.out.println("-------------------------------------");
     }
 
@@ -142,52 +152,14 @@ public class CliManager {
 
         Utente u = new Utente();
 
-        System.out.println("nome:");
-        String nome = sc.nextLine();
-        u.setNome(nome);
-
-        System.out.println("cognome:");
-        String cognome = sc.nextLine();
-        u.setCognome(cognome);
-
-        System.out.println("username:");
-        String username = sc.nextLine();
-        u.setUsername(username);
-
-        System.out.println("password:");
-        String password = sc.nextLine();
-        u.setPassword(password);
-
-        System.out.println("credito:");
-        String strCredito = sc.nextLine();
-        int credito = Integer.parseInt(strCredito);
-        u.setCredito(credito);
-
-        System.out.println("ruoli:");
-        List<Role> ruoli = roleService.findAll();
-        System.out.println(ruoli);
-        System.out.println("id ruolo:");
-        String strRole = sc.nextLine();
-        Long idRole = Long.parseLong(strRole);
-        Role role = roleService.findById(idRole);
-        u.setRole(role);
-
-        utenteService.save(u);
+        save(u);
     }
 
     private void insertRole() {
 
         Role r = new Role();
 
-        System.out.println("nome:");
-        String nome = sc.nextLine();
-        r.setNome(nome);
-
-        System.out.println("descrizione:");
-        String descrizione = sc.nextLine();
-        r.setDescrizione(descrizione);
-
-        roleService.save(r);
+        saveRole(r);
     }
 
     private void edit() {
@@ -202,38 +174,7 @@ public class CliManager {
             System.out.println("Utente non trovato");
             return;
         }
-
-        System.out.println("nome: (" + u.getNome() + ")");
-        String nome = sc.nextLine();
-        u.setNome(nome);
-
-        System.out.println("cognome: (" + u.getCognome() + ")");
-        String cognome = sc.nextLine();
-        u.setCognome(cognome);
-
-        System.out.println("username: (" + u.getUsername() + ")");
-        String username = sc.nextLine();
-        u.setUsername(username);
-
-        System.out.println("password: (" + u.getPassword() + ")");
-        String password = sc.nextLine();
-        u.setPassword(password);
-
-        System.out.println("credito: (" + u.getCredito() + ")");
-        String strCredito = sc.nextLine();
-        int credito = Integer.parseInt(strCredito);
-        u.setCredito(credito);
-
-        System.out.println("ruoli: (" + u.getRole() + ")");
-        List<Role> ruoli = roleService.findAll();
-        System.out.println(ruoli);
-        System.out.println("id ruolo:");
-        String strRole = sc.nextLine();
-        Long idRole = Long.parseLong(strRole);
-        Role role = roleService.findById(idRole);
-        u.setRole(role);
-
-        utenteService.save(u);
+        save(u);
     }
 
     private void editRole() {
@@ -249,15 +190,7 @@ public class CliManager {
             return;
         }
 
-        System.out.println("nome: (" + r.getNome() + ")");
-        String nome = sc.nextLine();
-        r.setNome(nome);
-
-        System.out.println("descrizione: (" + r.getDescrizione() + ")");
-        String descrizione = sc.nextLine();
-        r.setDescrizione(descrizione);
-
-        roleService.save(r);
+        saveRole(r);
     }
 
     private void delete() {
@@ -288,5 +221,60 @@ public class CliManager {
         } else {
             System.out.println("Ruolo non trovato");
         }
+    }
+
+    private void save(Utente u) {
+        boolean isNew = u.getId() == null;
+
+        System.out.println("Nome: " + (isNew ? "" : "(" + u.getNome() + ")"));
+        String nome = sc.nextLine();
+        u.setNome(nome);
+
+        System.out.println("Cognome: " + (isNew ? "" : "(" + u.getCognome() + ")"));
+        String cognome = sc.nextLine();
+        u.setCognome(cognome);
+
+        System.out.println("Username: " + (isNew ? "" : "(" + u.getUsername() + ")"));
+        String username = sc.nextLine();
+        u.setUsername(username);
+
+        System.out.println("Password: " + (isNew ? "" : "(" + u.getPassword() + ")"));
+        String password = sc.nextLine();
+        u.setPassword(password);
+
+        System.out.println("Credito: " + (isNew ? "" : "(" + u.getCredito()/100+","+u.getCredito()%100 + ")"));
+        String strCredito = sc.nextLine();
+        int credito = Integer.parseInt(strCredito);
+        u.setCredito(credito);
+
+        System.out.println("Ruoli: " + (isNew ? "" : "(" + u.getRole() + ")"));
+        List<Role> ruoli = roleService.findAll();
+        ruoli.stream()
+            .map(r -> r.getId() + " - " + r.getNome())
+            .forEach(System.out::println);
+        String roleIdStr = (isNew ? "" : "(" + u.getRole().getId() + ")");
+
+        System.out.println("Id ruolo:" + (isNew ? "" : roleIdStr ));
+        String strRole = sc.nextLine();
+        Long idRole = Long.parseLong(strRole);
+        Role role = roleService.findById(idRole);
+        u.setRole(role);
+
+        utenteService.save(u);
+    }
+
+    private void saveRole(Role r) {
+        boolean isNew = r.getId() == null;
+
+        System.out.println("Nome: " + (isNew ? "" : "(" + r.getNome() + ")"));
+        String nome = sc.nextLine();
+        r.setNome(nome);
+
+        System.out.println("Descrizione: " + (isNew ? "" : "(" + r.getDescrizione() + ")"));
+        String descrizione = sc.nextLine();
+        r.setDescrizione(descrizione);
+
+        roleService.save(r);
+
     }
 }
