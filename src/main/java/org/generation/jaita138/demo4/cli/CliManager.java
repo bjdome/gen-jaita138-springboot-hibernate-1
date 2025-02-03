@@ -132,8 +132,8 @@ public class CliManager {
             + u.getCognome() + " - " 
             + u.getUsername() + " - " 
             + u.getPassword() + " - " 
-            + u.getCredito()/100+","+u.getCredito()%100 + " - " 
-            + u.getRole().getNome())
+            + u.getCredito()/100 + "," + u.getCredito()%100 + " - " 
+            + (u.getRole() == null ? "Nessun ruolo" : u.getRole().getNome()))
             .forEach(System.out::println);
         System.out.println("-------------------------------------");
     }
