@@ -5,8 +5,8 @@ import java.util.List;
 import org.generation.jaita138.demo4.cli.CliManager;
 import org.generation.jaita138.demo4.db.entity.Role;
 import org.generation.jaita138.demo4.db.entity.Utente;
-import org.generation.jaita138.demo4.db.repository.UtenteRepo;
 import org.generation.jaita138.demo4.db.service.RoleService;
+import org.generation.jaita138.demo4.db.service.SubRedditService;
 import org.generation.jaita138.demo4.db.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,9 +19,9 @@ public class Demo4Application implements CommandLineRunner {
     @Autowired
     private UtenteService utenteService;
     @Autowired
-    private UtenteRepo utenteRepo;
-    @Autowired
     private RoleService roleService;
+    @Autowired
+    private SubRedditService subRedditService;
 
     public static void main(String[] args) {
         SpringApplication.run(Demo4Application.class, args);
@@ -33,7 +33,8 @@ public class Demo4Application implements CommandLineRunner {
         //new CliManager(utenteService);
         //testQuery();
         //testRole();
-        new CliManager(utenteService, roleService);
+        //new CliManager(utenteService, roleService);
+        new CliManager (utenteService, roleService, subRedditService);
     }
 
     public void test() {
@@ -57,22 +58,22 @@ public class Demo4Application implements CommandLineRunner {
 
     public void testQuery() {
         System.out.println("--------------------------------");
-        List<Utente> utenti = utenteRepo.findByNomeStartsWith("a");
+        List<Utente> utenti = utenteService.findByNomeStartsWith("a");
         System.out.println(utenti);
 
         System.out.println("--------------------------------");
 
-        utenti = utenteRepo.findByCreditoGreaterThan(10 * 100);
+        utenti = utenteService.findByCreditoGreaterThan(10 * 100);
         System.out.println(utenti);
 
         System.out.println("--------------------------------");
 
-        utenti = utenteRepo.findByNomeNullOrCognomeNull();
+        utenti = utenteService.findByNomeNullOrCognomeNull();
         System.out.println(utenti);
 
         System.out.println("--------------------------------");
 
-        utenti = utenteRepo.findByCreditoBetween(0, 10 * 100);
+        utenti = utenteService.findByCreditoBetween(0, 10 * 100);
         System.out.println(utenti);
 
         System.out.println("--------------------------------");
